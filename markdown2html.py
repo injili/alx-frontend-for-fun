@@ -31,7 +31,8 @@ def main():
                 if match:
                     h_level = len(match.group(1))
                     h_content = match.group(2)
-                    html_content.append('<h{}>{}</h{}>\n'.format(h_level, h_content, h_level))
+                    html_content.append('<h{}>{}</h{}>\n'
+                                        .format(h_level, h_content, h_level))
                 else:
                     html_content.append(line)
 
