@@ -3,8 +3,12 @@
 """
 This is a script that is built step by step in
 order to convert Markdown text to HTML format
+
+Usage:
+    ./markdown2html.py [input.md] [input.html]
 """
 
+import re
 import os
 import sys
 
@@ -20,6 +24,11 @@ def main():
         sys.stderr.write("Missing {}\n".format(sys.argv[1]))
         sys.exit(1)
     else:
+        with open(sys.argv[1], 'r', encoding='utf-8') as f:
+            for line in f:
+                match = re.match(r'^#+\s.*$', line)
+                if match:
+
         sys.exit(0)
 
 
