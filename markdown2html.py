@@ -25,33 +25,49 @@ def main():
         sys.exit(1)
     else:
         html_content = []
-        is_prev_list = False
+        ul_prev_list = False
+        ol_prev_list = False
         with open(sys.argv[1], 'r', encoding='utf-8') as f:
             for line in f:
                 h_match = re.match(r'^(#+)\s(.*)$', line)
                 u_match = re.match(r'^-\s(.*)$', line)
+                o_match = re.match(r'^\*\s?(.*)$', line)
                 if h_match:
-                    if is_prev_list:
+                    if ul_prev_list:
                         html_content.append("</ul>\n")
-                        is_prev_list = False
+                        ul_prev_list = False
+                    elif ol_prev_list:
+                        html_content.append("</ol>\n")
+                        ol_prev_list = False
                     h_level = len(h_match.group(1))
                     h_content = h_match.group(2)
                     html_content.append('<h{}>{}</h{}>\n'
                                         .format(h_level, h_content, h_level))
                 elif u_match:
-                    if not is_prev_list:
+                    if not ul_prev_list:
                         html_content.append("<ul>\n")
-                        is_prev_list = True
+                        ul_prev_list = True
                     u_content = u_match.group(1)
                     html_content.append("<li>{}</li>\n".format(u_content))
 
+                elif o_match:
+                    if not ol_prev_list:
+                        html_content.append("<ol>\n")
+                        ol_prev_list = True
+                    o_content = o_match.group(1)
+                    html_content.append("<li>{}</li>\n".format(o_content))
+
                 else:
-                    if is_prev_list:
+                    if ul_prev_list:
                         html_content.append("</ul>\n")
-                        is_prev_list = False
+                        ul_prev_list = False
+                    elif ol_prev_list:
+                        html_content.append("</ol>\n")
                     html_content.append(line)
-        if is_prev_list:
+        if ul_prev_list:
             html_content.append("</ul>\n")
+        elif ol_prev_list:
+            html_content.append("</ol>\n")
 
         with open(sys.argv[2], 'w', encoding='utf-8') as f:
             f.writelines(html_content)
