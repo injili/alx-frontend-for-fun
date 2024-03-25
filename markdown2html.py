@@ -25,16 +25,33 @@ def main():
         sys.exit(1)
     else:
         html_content = []
+        is_prev_list = False
         with open(sys.argv[1], 'r', encoding='utf-8') as f:
             for line in f:
-                match = re.match(r'^(#+)\s(.*)$', line)
-                if match:
-                    h_level = len(match.group(1))
-                    h_content = match.group(2)
+                h_match = re.match(r'^(#+)\s(.*)$', line)
+                u_match = re.match(r'^-\s(.*)$', line)
+                if h_match:
+                    if is_prev_list:
+                        html_content.append("</ul>\n")
+                        is_prev_list = False
+                    h_level = len(h_match.group(1))
+                    h_content = h_match.group(2)
                     html_content.append('<h{}>{}</h{}>\n'
                                         .format(h_level, h_content, h_level))
+                elif u_match:
+                    if not is_prev_list:
+                        html_content.append("<ul>\n")
+                        is_prev_list = True
+                    u_content = u_match.group(1)
+                    html_content.append("<li>{}</li>\n".format(u_content))
+
                 else:
+                    if is_prev_list:
+                        html_content.append("</ul>\n")
+                        is_prev_list = False
                     html_content.append(line)
+        if is_prev_list:
+            html_content.append("</ul>\n")
 
         with open(sys.argv[2], 'w', encoding='utf-8') as f:
             f.writelines(html_content)
