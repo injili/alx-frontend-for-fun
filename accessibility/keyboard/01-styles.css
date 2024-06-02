@@ -665,17 +665,10 @@ ul.row {
 }
 
 .card-work .card-title a {
-  display: block;
   opacity: 0;
+  display: block;
   text-decoration: none;
   padding-top: 45%;
-}
-
-.card-work .card-title a:focus
-.card-work:hover .card-title a {
-  opacity: 1;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .card-work .card-title a::after {
@@ -685,6 +678,13 @@ ul.row {
   right: 0;
   bottom: 0;
   content: '';
+}
+
+.card-work .card-title a:hover
+.card-work:hover .card-title a {
+  opacity: 1;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 @media only screen and (max-width: 767px) {
