@@ -680,7 +680,7 @@ ul.row {
   content: '';
 }
 
-.card-work .card-title a:hover
+.card-work .card-title a:focus
 .card-work:hover .card-title a {
   opacity: 1;
   height: 100%;
